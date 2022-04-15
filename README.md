@@ -26,6 +26,7 @@ If NOT found run following: \
 ### 2) Call peaks with SICER
 ###### Prerequisites:
 + [SICER](https://zanglab.github.io/SICER2/)
+
 *********** edit **********
 From directory with all of the hg19 BAM files run following:\
 `$ callPeaks.sh`
@@ -35,6 +36,7 @@ In our settings we used input as a control for peak calling, when asked provide 
 e.g. *`localPathToInputBAM/input.bam`*\
 \
 Outputs from peak-calling are placed into individual folders named after individual BAM files.
+
 *********** edit **********
 
 
