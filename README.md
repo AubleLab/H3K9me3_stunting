@@ -25,7 +25,7 @@ If NOT found run following: \
 
 ### 2) Call peaks with SICER
 ###### Prerequisites:
-+ [SICER](https://zanglab.github.io/SICER2/)
++ [SICER_v1.1](https://home.gwu.edu/~wpeng/Software.htm)
 
 *********** edit **********
 From directory with all of the hg19 BAM files run following:\
