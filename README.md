@@ -23,24 +23,41 @@ If NOT found run following: \
 -Provide following (these are blacklisted sites defined by ENCODE - included here in */associated_files* folder):\
 *`localPathTo_H3K27ac_in_stunting_folder/associated_files/hg19_blacklist.bed`*
 
-### 2) Call peaks with SICER
+
+### 2) Create bigWig files and BED coverage files
+###### Prerequisites:
++ [refgenie](http://refgenie.databio.org/en/latest/)
++ [bedtools](https://bedtools.readthedocs.io/en/latest/index.html)
++ [bedGraphToBigWig](https://anaconda.org/bioconda/ucsc-bedgraphtobigwig)
+
+First check if you have chromosome sizes for hg19.\
+`$ refgenie seek hg19/fasta.chrom_sizes`
+
+If NOT found run following: \
+`$ refgenie pull hg19/fasta.chrom_sizes` 
+
+**From directory with previously generated BAM files run following script**\
+`$ coverageFiles.sh `
+
+The created bigWig files are placed into filder named *output_bw_notNormalized*, the BED coverage files into a directory named *output_BED*.
+
+
+### 3) Call peaks with SICER
 ###### Prerequisites:
 + [SICER_v1.1](https://home.gwu.edu/~wpeng/Software.htm)
 
-*********** edit **********
-From directory with all of the hg19 BAM files run following:\
-`$ callPeaks.sh`
+From directory with all of the previously created BED coverage files (note: move input control file to a different directory) run following:\
+`$ call_peaks_SICER.sh`
 
-In our settings we used input as a control for peak calling, when asked provide name of the input BAM file (including path name). !!! Input BAM file should be placed at different location from the other BAM files, otherwise peak-calling will be done also on this file).\
-*`What is the name of the control dataset (including path)?`*\
-e.g. *`localPathToInputBAM/input.bam`*\
+In our settings we used input as a control for peak calling, when asked provide name of the input BED file (including path name). !!! Input BED file should be placed at different location from the other BED files, otherwise peak-calling will be done also on this file).\
+*`Give a full name (including pathway) of an control BED file (coverage over input).`*\
+e.g. *`localPathToInputBED/input.bed`*\
 \
-Outputs from peak-calling are placed into individual folders named after individual BAM files.
-
-*********** edit **********
+Outputs from peak-calling are placed into folder called *SICER_output*.
 
 
-### 3) Create count tables
+
+### 4) Create count tables
 Move the output files from previous step ending with "_Enhancer.bed" into a separate folder and from here run following (separate for each age group): \
 `cat *.bed | sort -k1,1 -k2,2n | bedtools merge -i stdin > masterPeaks.bed`
 
@@ -49,7 +66,7 @@ Place the masterEnhancer.bed file into a folder containing all BAM files for a g
 
 First three columns in the table are genomic coordinates of regions of interest followed by counts for individual samples. Make sure to add sample names to the sample columns based on their order within the folder (`ls *.bam`).
 
-### 4) Map FASTQ files to dm6
+### 5) Map FASTQ files to dm6
 First check if you have bowtie2 index.\
 `$ refgenie seek dm6/bowtie2_index`
 
@@ -64,7 +81,7 @@ If NOT found run following: \
 -Provide following (these are blacklisted sites defined by ENCODE - included here in */associated_files* folder):\
 *`localPathTo_H3K27ac_in_stunting_folder/associated_files/dm6_blacklist.bed`*
 
-### 4) Get heatmaps and average profile over genes and peaks
+### 6) Get heatmaps and average profile over genes and peaks
 ###### Prerequisites:
 + [deepTools](https://deeptools.readthedocs.io/en/develop/)
 
